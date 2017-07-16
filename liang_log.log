@@ -1,0 +1,2 @@
+jupyter notebook --no-browser --port=1234
+ssh -f liangxu@172.22.195.74 -L 8888:localhost:1234 -N

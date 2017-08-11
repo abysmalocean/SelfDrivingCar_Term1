@@ -16,11 +16,13 @@ n_hidden_layer = 256 # layer number of features
 
 # Store layers weight & bias
 weights = {
-    'hidden_layer': tf.Variable(tf.random_normal([n_input, n_hidden_layer])),
+    'hidden_layer1': tf.Variable(tf.random_normal([n_input, n_hidden_layer])),
+    'hidden_layer2': tf.Variable(tf.random_normal([n_input, n_hidden_layer])),
     'out': tf.Variable(tf.random_normal([n_hidden_layer, n_classes]))
 }
 biases = {
-    'hidden_layer': tf.Variable(tf.random_normal([n_hidden_layer])),
+    'hidden_layer1': tf.Variable(tf.random_normal([n_hidden_layer])),
+    'hidden_layer2': tf.Variable(tf.random_normal([n_hidden_layer])),
     'out': tf.Variable(tf.random_normal([n_classes]))
 }
 
@@ -31,10 +33,13 @@ y = tf.placeholder("float", [None, n_classes])
 x_flat = tf.reshape(x, [-1, n_input])
 
 # Hidden layer with RELU activation
-layer_1 = tf.add(tf.matmul(x_flat, weights['hidden_layer']), biases['hidden_layer'])
+layer_1 = tf.add(tf.matmul(x_flat, weights['hidden_layer1']), biases['hidden_layer1'])
 layer_1 = tf.nn.relu(layer_1)
+# add one more layer
+layer_2 = tf.add(tf.matmul(x_flat, weights['hidden_layer2']), biases['hidden_layer2'])
+layer_2 = tf.nn.relu(layer_2)
 # Output layer with linear activation
-logits = tf.matmul(layer_1, weights['out']) + biases['out']
+logits = tf.matmul(layer_2, weights['out']) + biases['out']
 
 # Define loss and optimizer
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=y))

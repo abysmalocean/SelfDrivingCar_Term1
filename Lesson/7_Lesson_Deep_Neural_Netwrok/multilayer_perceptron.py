@@ -37,11 +37,14 @@ x_flat = tf.reshape(x, [-1, n_input])
 # Hidden layer with RELU activation
 layer_1 = tf.add(tf.matmul(x_flat, weights['hidden_layer1']), biases['hidden_layer1'])
 layer_1 = tf.nn.relu(layer_1)
+layer_1 = tf.nn.dropout(layer_1, 0.5)
 # add one more layer
 layer_2 = tf.add(tf.matmul(x_flat, weights['hidden_layer2']), biases['hidden_layer2'])
 layer_2 = tf.nn.relu(layer_2)
+layer_2 = tf.nn.dropout(layer_2, 0.5)
 layer_3 = tf.add(tf.matmul(x_flat, weights['hidden_layer3']), biases['hidden_layer3'])
 layer_3 = tf.nn.relu(layer_3)
+layer_3 = tf.nn.dropout(layer_3, 0.5)
 # Output layer with linear activation
 logits = tf.matmul(layer_3, weights['out']) + biases['out']
 

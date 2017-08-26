@@ -90,17 +90,19 @@ My final model consisted of the following layers:
 | Layer         		|     Description	        					|
 |:---------------------:|:---------------------------------------------:|
 | Input         		| 32x32x1 Y channel image							|
-| Convolution 5x5     	| 1x1 stride, same padding, outputs 28x28x6 	|
+| Convolution 5x5   | 1x1 stride, same padding, outputs 28x28x6 	|
+| RELU					    |												|
+| Max pooling	      	| input 28*28*6,  outputs 14x14x6 				|
+| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x16 |
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 5x5	    | 1x1 stride, valid padding, outputs 14x14x6 |
+| Max pooling	      	| input 10*10*16,  outputs 5x5x16 				|
+| Flatten 	      	| Input = 5x5x16. Output = 400 				|
+| Fully connected		| Input = 400. Output = 120        									|
 | RELU					|												|
-| Fully connected		| Input 14x14x6 = 400 output 120        									|
+| Dropout					|		Dropout rate 0.4										|
+| Fully connected		| Input = 120. Output = 84        									|
 | RELU					|												|
-| Dropout					|												|
-| Fully connected		| Input 120 output 84        									|
-| RELU					|												|
-| Dropout					|												|
+| Dropout					|		Dropout rate 0.4										|
 | Fully connected		| Input 84 output 43        									|
 | Softmax				| etc.        									|
 
@@ -108,12 +110,29 @@ My final model consisted of the following layers:
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-I trained the model using the same as LeNet. Use Adam optimizer, learning rate 0.001 , BATCH_SIZE = 128, EPOCHS = 200
+I trained the model using the same as LeNet. Use Adam optimizer, learning rate 0.001 , BATCH_SIZE = 128, EPOCHS = 200, dropout rate is 0.4.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 
-For this project I have choose a well know architecture called LeNet, this perticular Deep Learning network has been shown it ability to image classification. The learning rate is 0.001 after try and error. This deep network has shown it ability to distinguish the hand writting, it show also good for traffic sign calssification.
+For this project I have choose a well know architecture called LeNet, this particular Deep Learning network has been shown it ability to image classification. The learning rate is 0.001 after try and error. This deep network has shown it ability to distinguish the hand writing, it show also good for traffic sign classification.
+
+What was the first architecture that was tried and why was it chosen?
+
+- The first mode I have chosen is the traditional LeNet model I have learned in the class. This model is simple and I have practiced this model also.
+
+What were some problems with the initial architecture?
+- There are not particular problem, just want to improve the total accuracy of the validation data set. After several round, I found out the accuracy of validation data set is not improving.
+
+How was the architecture adjusted and why was it adjusted?
+- I decide to add two dropout layer. And add more image by change the original image. I believe this because the model is too believe the training data. Dropout would be better choice.
+
+Which parameters were tuned? How were they adjusted and why?
+- two dropout layer added to the network, I have to choose the dropout rate. I have run the model several times in order to get the best result.
+
+What are some of the important design choices and why were they chosen?
+- add more image to the data set.
+  - more data set had been added to the tanning data set by translate, shear, and other effect to the original tanning image.
 
 My final model results were:
 * training set accuracy of 0.966
@@ -132,6 +151,9 @@ Here are five German traffic signs that I found on the web:
 <img src="extra_data/14.png" width="200">
 <img src="extra_data/17.png" width="200">
 <img src="extra_data/35.png" width="200">
+
+Those are the test image I am going to use in the following section. Those images are not prefect. None of those images are prefect. the first image is to bright, which make the prediction a little bit hard. I have created wired signs on the second iamge(11.png), this the distribution will affect the prediction also.
+the third image (stop sign) has been block 1/5 of the sing. The fourth image is a skew image. But I think this is most easy one. The fifth image has large noise.
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 

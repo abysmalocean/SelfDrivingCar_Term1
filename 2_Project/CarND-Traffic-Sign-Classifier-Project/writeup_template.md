@@ -99,10 +99,10 @@ My final model consisted of the following layers:
 | Flatten 	      	| Input = 5x5x16. Output = 400 				|
 | Fully connected		| Input = 400. Output = 120        									|
 | RELU					|												|
-| Dropout					|		Dropout rate 0.4										|
+| Dropout					|		Dropout rate 0.3										|
 | Fully connected		| Input = 120. Output = 84        									|
 | RELU					|												|
-| Dropout					|		Dropout rate 0.4										|
+| Dropout					|		Dropout rate 0.3										|
 | Fully connected		| Input 84 output 43        									|
 | Softmax				| etc.        									|
 
@@ -135,9 +135,9 @@ What are some of the important design choices and why were they chosen?
   - more data set had been added to the tanning data set by translate, shear, and other effect to the original tanning image.
 
 My final model results were:
-* training set accuracy of 0.966
+* training set accuracy of 0.982
 * validation set accuracy of 0.942
-* test set accuracy of 0.901
+* test set accuracy of 0.927
 
 
 ### Test a Model on New Images
@@ -159,13 +159,17 @@ the third image (stop sign) has been block 1/5 of the sing. The fourth image is 
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| Right-of-way at the next intersection      		| Right-of-way at the next intersection   									|
-| Stop   			| Stop									|
-| Ahead only					| Ahead only											|
-| Speed limit	      		| Speed limit			 				|
-| No entry			| No entry      							|
+
+                Image                 |              Prediction
+:-----------------------------------: | :-----------------------------------:
+Right-of-way at the next intersection | Right-of-way at the next intersection
+                Stop                  |                 Stop
+             Ahead only               |              Ahead only
+             Speed limit (30km/h)     |             **Speed limit(50km/h)**
+              No entry                |               No entry
+
+One of the classification is not correct. I think the image effect added to the training data confuse the network to make the wrong prediction. 
+
 
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
@@ -175,52 +179,51 @@ The model was able to correctly guess 4 of the 5 traffic signs, which gives an a
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
 For the first image, the model is relatively sure that this is a Right-of-way at the next intersection sign (probability of 0.88), and the image does contain a Right-of-way at the next intersection sign. The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| .88         			| Right-of-way at the next intersection 									|
-| .11     				| Road work										|
-| .02					| Beware of ice/snow											|
-| .00	      			| Pedestrians					 				|
-| .00				    | Children crossing      							|
-
+Probability |              Prediction
+:---------: | :-----------------------------------:
+  0.96756   | Right-of-way at the next intersection
+  0.03173   |          Beware of ice/snow
+  0.00022   |               Road work
+  0.00021   |             Double curve
+  0.00016   |           Children crossing
 
 For the second image, the prediction is very clear, it is a "Stop" sign.
 
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| 1.00         			| Stop 									|
-| .00     				| Turn right ahead									|
-| .00					| Turn left ahead											|
-| .00	      			| Ahead only					 				|
-| .00				    | Speed limit (60km/h)      							|
+Probability |      Prediction
+:---------: | :------------------:
+  0.84335   |         Stop
+  0.09127   | Roundabout mandatory
+  0.02986   |      Keep right
+  0.01187   |      Keep left
+  0.00789   |   Turn right ahead
 
 For the third image: The prediction also very clear it is a Ahead Only:
 
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| 1.00         			| Ahead only 									|
-| .00     				| Turn right ahead									|
-| .00					| Turn left ahead											|
-| .00	      			|Go straight or left				 				|
-| .00				    | Go straight or right    							|
+Probability |      Prediction
+:---------: | :------------------:
+  0.40103   |      Ahead only
+  0.11454   |        Yield
+  0.06607   |    Priority road
+  0.04422   | Go straight or right
+  0.04275   |   Turn right ahead
 
-For the fourth image: The prediction also very clear it is a speed limit (30km/h) Only. The top 5 predictions are all speed limit sign
 
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| 1.00         			| Speed limit (30km/h)									|
-| .00     				| Speed limit (20km/h)									|
-| .00					| Speed limit (70km/h)										|
-| .00	      			|Speed limit (50km/h)			 				|
-| .00				    | Speed limit (100km/h) 							|
+For the fourth image: The prediction also very clear it is a speed limit (30km/h) Only. The top 5 predictions are all speed limit sign **Missprediction**
+
+Probability |      Prediction
+:---------: | :------------------:
+  0.97408   | Speed limit (50km/h)
+  0.02543   | Speed limit (30km/h)
+  0.00026   | Speed limit (60km/h)
+  0.00011   | Speed limit (80km/h)
+  0.00011   | Speed limit (20km/h)
 
 For the last image: The prediction also very clear it is a No entry. The top 5 predictions are all speed limit sign
 
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| 1.00         			| No entry									|
-| .00     				| Keep left									|
-| .00					| Priority road									|
-| .00	      			|Stop		 				|
-| .00				    | Go straight or left 							|
+Probability |     Prediction
+:---------: | :-----------------:
+  0.98171   |      No entry
+  0.01794   |    Priority road
+  0.00014   | Go straight or left
+  0.00008   |     Ahead only
+  0.00005   |  Turn right ahead

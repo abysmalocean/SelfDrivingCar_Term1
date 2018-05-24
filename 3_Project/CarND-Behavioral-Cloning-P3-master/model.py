@@ -18,8 +18,7 @@ Steering_angle = 3
 INPUT_SHAPE = (64, 64, 3)
 learning_rate = 0.01
 BATCH_SIZE = 128
-EPOCHS = 100
-
+EPOCHS = 5
 
 def loadImage(path = "../data/driving_log.csv"):
     '''
@@ -129,7 +128,7 @@ def model():
     model.add(Dense(50  , activation='relu',name='Dense3'))
     model.add(Dense(10  , activation='relu',name='Dense4'))
     model.add(Dense(1   , activation='relu',name='Dense5'))
-    model.compile(loss='mse', optimizer=Adam(lr=learning_rate),metrics=['accuracy'])
+    model.compile(loss='mean_squared_error', optimizer=Adam(lr=learning_rate))
     return model
 
 def train(model,X_train, X_valid, y_train, y_valid):
@@ -139,8 +138,9 @@ def train(model,X_train, X_valid, y_train, y_valid):
                         nb_epoch=EPOCHS,
                         validation_data = generator(X_valid,y_valid, batch_size = BATCH_SIZE, angle_argument = 0.22),
                         nb_val_samples = len(100 * X_valid),
-                        callbacks=[ModelCheckpoint('tranning.h5',monitor='val_loss', save_best_only=False)],
+                        callbacks=[ModelCheckpoint('tranning.h5',verbose=0,monitor='val_loss', save_best_only=False)],
                         verbose=1)
+    model.save_weights("model.h5", overwrite=True)
 
 X_train, X_valid, y_train, y_valid = loadImage()
 model =model()
